@@ -1,5 +1,8 @@
 from random import choice
 
+ATTEMPTS = 8
+WORDS = ['python', 'java', 'swift', 'javascript']
+
 
 def uncover(word, hidden_word, letter):
     for i in range(len(word)):
@@ -9,17 +12,15 @@ def uncover(word, hidden_word, letter):
 
 
 def play():
-    is_won = False
-    attempts = 8
-    words = ['python', 'java', 'swift', 'javascript']
-    correct_word = list(choice(words))
+    attempts_counter = ATTEMPTS
+    correct_word = list(choice(WORDS))
     hint = ['-'] * len(correct_word)
     guessed_letters = set()
 
     while True:
-        if attempts == 0:
+        if attempts_counter == 0:
             print('You lost!')
-            break
+            return False
 
         print()
         print(''.join(hint))
@@ -42,16 +43,13 @@ def play():
 
         if guess not in correct_word:
             print(f"That letter doesn't appear in the word.")
-            attempts -= 1
+            attempts_counter -= 1
             continue
 
         hint = uncover(correct_word, hint, guess)
         if hint == correct_word:
             print(f"You guessed the word {''.join(hint)}!\nYou survived!")
-            is_won = True
-            break
-
-    return is_won
+            return True
 
 
 def print_result(won, lost):
